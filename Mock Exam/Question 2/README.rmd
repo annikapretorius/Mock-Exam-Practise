@@ -1,0 +1,112 @@
+---
+title: "Paged HTML Document"
+author: "Annika Pretorius"
+date: "June 2024"
+# date: "`r Sys.Date()`"
+bibliography: Tex/ref.bib       # Do not edit: Keep this naming convention and location.
+output:
+  pagedown::html_paged:
+    # template: wp_paged.html
+    # css: ['wp.css', 'wp-fonts.css', 'wp-page.css']
+    css: ["Template/default-fonts-Texevier.css", "Template/default-page-Texevier.css", "Template/default-Texevier.css"]
+    csl: Template/harvard-stellenbosch-university.csl # referencing format used.
+    template: ["Template/paged-Texevier.html"]
+
+    toc: true
+    # change to true for a self-contained document, but it'll be a litte slower for Pandoc to render
+    self_contained: TRUE
+abstract: |
+    This is an abstract. Much can be written here. Uncomment this line to go without an abstract.
+    Abstracts have no spaces, but can have bullets.
+
+    Bullets can be created as follows
+
+    + You can add bullets, but do not add colons please.
+
+    + Line breaks are also not permitted.
+
+---
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+
+knitr::opts_chunk$set(echo = FALSE, message =FALSE, warning = FALSE, fig.width = 6, fig.height = 5)
+options(dplyr.summarise.inform=F)
+
+if(!require("tidyverse")) install.packages("tidyverse")
+library(tidyverse)
+library(dplyr)
+library(readr)
+library(glue)
+
+
+list.files('code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
+# Source Question 1's code too ()for plot_order function) - note ..// here means go up one level from current folder
+list.files('..//Question1/code/', full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
+
+#Data loading:
+    # Construct the full path to the RDS file
+# Define the location of the data files
+Loc <- "data/Wine/"
+
+# Construct the full path to the RDS file
+full_path <- glue::glue("{Loc}WineMag.rds")
+print(full_path)
+
+# Check the current working directory
+print(getwd())
+
+# Check if the file exists
+if (!file.exists(full_path)) {
+  stop("File does not exist: ", full_path)
+}
+
+# List files in the data/Wine directory to confirm presence
+print(list.files(Loc))
+
+# Read the RDS file
+dff <- read_rds(full_path)
+    Fruitlist <- read_table("data/wine/Fruitlist.txt")
+    froots <- Fruitlist$Fruits  %>% unique %>% as.list()
+    CountryList <- c("South Africa", "Italy", "France", "US", "Spain")
+
+    dff_adj <- dff %>% filter(country %in% CountryList)
+
+```
+
+
+# Overview
+
+In this report, we look at what Sommeliers prefer globally, and specifically the frequency with which references to fruity flavours are made.
+
+Important note - some of the chunks take long to build. You can add cache=TRUE to the top part of a chunk - which means unless you adjust the chunk's code in any way, it will save the output and load it quickly. This makes building your pdf quicker.
+
+
+We will also consider the local wine reviews from two prominent critics.
+
+### Fruit reference count
+
+In order to get insight into how often fruits are mentioned in reviews, and also which fruits are mentioned most - we collated a list of fruits and sought to identify the ....
+
+We see that Plums are most referenced, with critics in Spain most regularly referencing fruits in their reviews:
+
+Plot how many ratings each country received as a barplot, with the median score placed
+vertically above each bar
+
+```{r, echo = FALSE, warning =  FALSE, fig.align = 'center', fig.cap = "Happiness Ladder.\\label{Figure1}", fig.ext = 'png', fig.height = 5, fig.width = 7}
+
+library(dplyr)
+library(ggplot2)
+library(glue)
+
+source( "code/arrange_data.R")
+source( "code/Barplot_Ratings.R")
+
+print(colnames(dff_adj))
+
+# Example usage
+g <- Barplot_Ratings(dff_adj, Title = "Order of Ratings", xaxis_size = 5, xaxis_rows = 3)
+print(g)
+
+```
+Create a table of the frequency with which Sommeliers use the words: Tannins ; smoke,
+smokey or ash ; wooded, wooden or woody.

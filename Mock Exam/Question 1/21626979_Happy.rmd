@@ -1,0 +1,151 @@
+---
+title: "What makes us happy?"
+documentclass: "elsarticle"
+
+# Front Page settings
+AddTitle: TRUE
+Author1: "Nico Katzke^[__Contributions:__  \\newline _The authors would like to thank the World Happiness survey for showing us what happiness is._]"
+Ref1: "Satrix, Cape Town"
+Email1: "nfkatzke\\@gmail.com"
+CorrespAuthor_1: TRUE
+
+# Footer and header settings
+BottomRFooter: "\\footnotesize Page \\thepage"
+addtoprule: TRUE
+addfootrule: TRUE
+
+# Page margins
+margin: 2.3
+bottom: 2
+top: 2.5
+HardSet_layout: TRUE
+
+# Line numbers
+linenumbers: FALSE
+
+# References settings
+bibliography: Tex/ref.bib
+csl: Tex/harvard-stellenbosch-university.csl
+
+# General settings
+RemovePreprintSubmittedTo: TRUE
+Journal: "Journal of Finance"
+toc: FALSE
+numbersections: TRUE
+fontsize: 11pt
+linestretch: 1.2
+link-citations: TRUE
+
+# Adding additional latex packages
+header-includes:
+  - \usepackage{colortbl}
+  - \usepackage{framed}
+  - \usepackage{fancyvrb}
+  - \usepackage{color}
+  - \usepackage{xcolor}
+  - \usepackage{geometry}
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+  - \definecolor{shadecolor}{RGB}{248,248,248}
+  - \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+
+output:
+  pdf_document:
+    keep_tex: TRUE
+    template: Tex/TexDefault.txt
+
+abstract: |
+  This article aims to discuss what makes us happy. This is a suggested solution to question 1.
+---
+\pagenumbering{roman} 
+
+\begin{titlepage}
+ \centering
+  {\scshape\Huge World Happiness Report \par}
+  \vspace{2cm}
+  {\Large\itshape Annika Pretorius (21626979) \par}
+  {\large 14 June 2024 \par}
+\end{titlepage}
+
+\clearpage
+
+\tableofcontents
+
+\clearpage
+
+\pagenumbering{arabic}
+
+# 1. Introduction \label{Introduction}
+
+speaking about happiness 
+```{r setup, include=FALSE}
+if(!require("tidyverse")) install.packages("tidyverse")
+library(tidyverse)
+library(readr)
+
+Happy_Central_and_Eastern_Europe <- read_csv("data/Happy_Central and Eastern Europe.csv")
+Happy_Commonwealth_of_Independent_States <- read_csv("data/Happy_Commonwealth of Independent States.csv")
+Happy_East_Asia <- read_csv("data/Happy_East Asia.csv")
+Happy_Latin_America_and_Caribbean <- read_csv("data/Happy_Latin America and Caribbean.csv")
+Happy_Middle_East_and_North_Africa <- read_csv("data/Happy_Middle East and North Africa.csv")
+Happy_North_America_and_ANZ <- read_csv("data/Happy_North America and ANZ.csv")
+Happy_South_Asia <- read_csv("data/Happy_South Asia.csv")
+Happy_Southeast_Asia <- read_csv("data/Happy_Southeast Asia.csv")
+Happy_Sub_Saharan_Africa <- read_csv("data/Happy_Sub-Saharan Africa.csv")
+Happy_Western_Europe <- read_csv("data/Happy_Western Europe.csv")
+
+source( "code/collate_data.R") #sourcing the function which collates all the necessary data into a dataframe 
+
+# Define the path to your data folder
+directory <- "C:/Users/Annika Pretorius/Dropbox/PC/Documents/Mock Exam/Question 1/data"
+
+# Import and merge the data
+combine_df <- collate_data(directory)
+
+# View the resulting data frame
+print(df)
+
+```
+
+
+```{r,  echo = FALSE, warning =  FALSE, fig.align = 'center', fig.cap = "Happiness Ladder.\\label{Figure1}", fig.ext = 'png', fig.height = 5, fig.width = 7}
+
+ # Source the plot with a function, and then print it as below.
+    # Going through the function, you will note that I'm able to source other functions in the code folder in these functions too.
+# That's the beauty of centralizing your functions and loading it in the top.
+source( "code/arrange_data.R")
+source( "code/Error_Bar_Plot.R")
+
+
+g <- Error_Bar_Plot(combine_df, xaxis_size = 5, xaxis_rows = 3)
+    
+g
+
+library(dplyr)
+
+```
+
+\newpage
+
+Let's start a newpage here, just because. 
+
+
+```{r,  echo = FALSE, warning =  FALSE, fig.align = 'center', fig.cap = "Happiness Ladder.\\label{Figure2}", fig.ext = 'png', fig.height=6, fig.width=6}
+
+
+source("code/Barplot.R")
+
+g1 <- Barplot(combine_df, Title = "Barplot making up the ladder", Subtitle = "Look at the colours - wow.", xaxis_size = 5, xaxis_rows = 3)
+
+g1 
+
+```
+
+
+Try sprucing up the above figures even more, as well as adding some interpretation of the figures here.
+
+As you can see from Figure \ref{Figure1}, happiness is not perfectly correlated with life expectancy. Maybe posit some theory here and reference a paper to show that you can do this as well. If you do that, just keep in the bibliography information of course - as I didn't cite anyone here, I omitted it.
+
+
+
+
